@@ -5,6 +5,7 @@ import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 const MUSIC_CONFIG_PATH = path.join(process.cwd(), 'data', 'music.json');
 const PUBLIC_DIR = path.join(process.cwd(), 'public');
@@ -22,20 +23,17 @@ const DEFAULT_CONFIG: MusicConfig = {
 };
 
 async function getMusicConfig(): Promise<MusicConfig> {
-  // 1. Try reading from Firebase Firestore if configured
-  const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
-  if (projectId && !projectId.startsWith('demo-')) {
-    try {
-      const snap = await getDoc(doc(db, 'settings', 'music'));
-      if (snap.exists()) {
-        const data = snap.data() as MusicConfig;
-        // Best-effort local file cache (safe on serverless)
-        fs.writeFile(MUSIC_CONFIG_PATH, JSON.stringify(data, null, 2), 'utf-8').catch(() => {});
-        return data;
-      }
-    } catch (err: any) {
-      console.warn('Firestore music read warning:', err.message);
+  // 1. Try reading from Firebase Firestore
+  try {
+    const snap = await getDoc(doc(db, 'settings', 'music'));
+    if (snap.exists()) {
+      const data = snap.data() as MusicConfig;
+      // Best-effort local file cache (safe on serverless)
+      fs.writeFile(MUSIC_CONFIG_PATH, JSON.stringify(data, null, 2), 'utf-8').catch(() => {});
+      return data;
     }
+  } catch (err: any) {
+    console.warn('Firestore music read warning:', err.message);
   }
 
   // 2. Fallback to local JSON file

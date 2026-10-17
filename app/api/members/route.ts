@@ -6,6 +6,7 @@ import { db } from '@/lib/firebase';
 import { collection, getDocs, doc, setDoc, deleteDoc } from 'firebase/firestore';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 const DATA_FILE_PATH = path.join(process.cwd(), 'data', 'members.json');
 const DEFAULT_AVATAR = '/deargod-avatar.png';
@@ -26,32 +27,29 @@ function cleanMemberDoc(m: any): Member {
 
 // Read members: primary from Firebase Firestore, fallback to local JSON file
 async function readMembers(): Promise<Member[]> {
-  const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
-  if (projectId && !projectId.startsWith('demo-')) {
-    try {
-      const colRef = collection(db, 'members');
-      const snapshot = await getDocs(colRef);
-      if (!snapshot.empty) {
-        const firestoreMembers: Member[] = [];
-        snapshot.forEach((d) => {
-          const data = d.data();
-          firestoreMembers.push(cleanMemberDoc({ ...data, id: data.id || d.id }));
-        });
+  try {
+    const colRef = collection(db, 'members');
+    const snapshot = await getDocs(colRef);
+    if (!snapshot.empty) {
+      const firestoreMembers: Member[] = [];
+      snapshot.forEach((d) => {
+        const data = d.data();
+        firestoreMembers.push(cleanMemberDoc({ ...data, id: data.id || d.id }));
+      });
 
-        // Sort chronologically by ID (#0001 -> #0056)
-        firestoreMembers.sort((a, b) => {
-          const numA = parseInt(a.id.replace(/\D/g, ''), 10) || 0;
-          const numB = parseInt(b.id.replace(/\D/g, ''), 10) || 0;
-          return numA - numB;
-        });
+      // Sort chronologically by ID (#0001 -> #0056)
+      firestoreMembers.sort((a, b) => {
+        const numA = parseInt(a.id.replace(/\D/g, ''), 10) || 0;
+        const numB = parseInt(b.id.replace(/\D/g, ''), 10) || 0;
+        return numA - numB;
+      });
 
-        // Keep local cache in sync asynchronously
-        fs.writeFile(DATA_FILE_PATH, JSON.stringify(firestoreMembers, null, 2), 'utf-8').catch(() => {});
-        return firestoreMembers;
-      }
-    } catch (err: any) {
-      console.warn('Firestore read error, falling back to local file:', err.message);
+      // Keep local cache in sync asynchronously
+      fs.writeFile(DATA_FILE_PATH, JSON.stringify(firestoreMembers, null, 2), 'utf-8').catch(() => {});
+      return firestoreMembers;
     }
+  } catch (err: any) {
+    console.warn('Firestore read error, falling back to local file:', err.message);
   }
 
   // Fallback to local file
@@ -89,11 +87,18 @@ export async function GET(request: Request) {
       list = list.filter((m) => m.role.toLowerCase() === role.toLowerCase());
     }
 
-    return NextResponse.json({
-      success: true,
-      total: list.length,
-      data: list,
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        total: list.length,
+        data: list,
+      },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err: any) {
     return NextResponse.json(
       { success: false, error: err.message || 'Failed to fetch members' },
