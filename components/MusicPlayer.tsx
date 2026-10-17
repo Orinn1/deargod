@@ -44,6 +44,7 @@ export default function MusicPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const hasStartedRef = useRef<boolean>(false);
   const hasRestoredTimeRef = useRef<boolean>(false);
+  const wasPlayingBeforeHideRef = useRef<boolean>(false);
 
   // Restore cached settings from localStorage on client mount (prevents SSR hydration mismatch)
   useEffect(() => {
@@ -213,20 +214,63 @@ export default function MusicPlayer() {
     };
   }, []);
 
-  // 5. Keep playing in background / lock screen when tab becomes hidden
+  // 5. Automatically pause when user leaves the web / minimizes tab / switches apps on mobile
+  // and resume when user returns to the website
   useEffect(() => {
     const handleVisibilityChange = () => {
+      const audio = audioRef.current;
+      if (!audio) return;
+
       if (document.visibilityState === 'hidden') {
-        const wasPlaying = localStorage.getItem(STORAGE_KEY_PLAYING) === 'true';
-        if (wasPlaying && audioRef.current && audioRef.current.paused) {
-          audioRef.current.play().catch(() => {});
+        // User switched apps, locked screen, or navigated away
+        if (!audio.paused) {
+          wasPlayingBeforeHideRef.current = true;
+          audio.pause();
+          setIsPlaying(false);
+          if (typeof window !== 'undefined' && 'mediaSession' in navigator) {
+            navigator.mediaSession.playbackState = 'paused';
+          }
+        }
+      } else if (document.visibilityState === 'visible') {
+        // User returned to the website
+        if (wasPlayingBeforeHideRef.current) {
+          audio
+            .play()
+            .then(() => {
+              setIsPlaying(true);
+              if (typeof window !== 'undefined' && 'mediaSession' in navigator) {
+                navigator.mediaSession.playbackState = 'playing';
+              }
+            })
+            .catch(() => {
+              setIsPlaying(false);
+            });
         }
       }
     };
 
+    // pagehide fires when navigating away or closing/backgrounding tab (especially on iOS Safari)
+    const handlePageHide = () => {
+      const audio = audioRef.current;
+      if (!audio) return;
+      if (!audio.paused) {
+        wasPlayingBeforeHideRef.current = true;
+        audio.pause();
+        setIsPlaying(false);
+      }
+      if (typeof window !== 'undefined' && 'mediaSession' in navigator) {
+        navigator.mediaSession.playbackState = 'none';
+      }
+    };
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('pagehide', handlePageHide);
+    window.addEventListener('beforeunload', handlePageHide);
+
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('pagehide', handlePageHide);
+      window.removeEventListener('beforeunload', handlePageHide);
     };
   }, []);
 
