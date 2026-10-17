@@ -19,8 +19,38 @@ const anton = Anton({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://deargod-official.vercel.app"
+  ),
   title: "DEARGOD WINTERFELL",
   description: "Official House of DEARGOD WINTERFELL",
+  openGraph: {
+    title: "DEARGOD WINTERFELL",
+    description: "Official House of DEARGOD WINTERFELL",
+    url: "https://deargod-official.vercel.app",
+    siteName: "DEARGOD WINTERFELL",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "DEARGOD WINTERFELL",
+      },
+    ],
+    locale: "th_TH",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "DEARGOD WINTERFELL",
+    description: "Official House of DEARGOD WINTERFELL",
+    images: ["/og-image.jpg"],
+  },
+  icons: {
+    icon: "/deargod-avatar.png",
+    shortcut: "/deargod-avatar.png",
+    apple: "/deargod-avatar.png",
+  },
 };
 
 export default function RootLayout({
