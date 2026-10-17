@@ -36,8 +36,8 @@ export default function MembersModal({ isOpen, onClose }: MembersModalProps) {
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200 select-none">
-      <div className="w-full max-w-2xl bg-[#0C0D12] border border-white/[0.1] rounded-2xl p-6 sm:p-7 shadow-2xl flex flex-col max-h-[85vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200 select-none">
+      <div className="w-full max-w-2xl bg-[#0C0D12] border border-white/[0.1] rounded-2xl p-4 sm:p-7 shadow-2xl flex flex-col max-h-[88vh]">
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
           <div>

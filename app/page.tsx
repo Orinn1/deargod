@@ -64,7 +64,7 @@ export default function LandingPage() {
       </main>
 
       {/* 3. BOTTOM CENTER: LIST NAME & ICO FACEBOOK */}
-      <footer className="relative z-20 flex flex-col items-center text-center mb-4 sm:mb-6 gap-3 sm:gap-3.5">
+      <footer className="relative z-20 flex flex-col items-center text-center mb-4 sm:mb-6 gap-3 sm:gap-3.5 pb-20 sm:pb-0">
         {/* LIST NAME (Button linking to /members) */}
         <div className="flex items-center gap-3">
           <Link

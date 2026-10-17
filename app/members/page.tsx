@@ -89,23 +89,23 @@ export default function MembersPage() {
       {/* MAIN CONTAINER */}
       <main className="relative z-20 flex-1 max-w-[1440px] w-full mx-auto px-4 sm:px-8 md:px-12 py-6 sm:py-10">
         {/* 1. TOP CENTER: DEARGOD & MEMBERS */}
-        <div className="flex flex-col items-center text-center mt-2 sm:mt-4 mb-8 sm:mb-12">
+        <div className="flex flex-col items-center text-center mt-2 sm:mt-4 mb-6 sm:mb-12">
           <h1 
             style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-            className="text-5xl sm:text-7xl md:text-8xl font-anton tracking-[0.16em] sm:tracking-[0.2em] text-white uppercase leading-none drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)]"
+            className="text-4xl sm:text-7xl md:text-8xl font-anton tracking-[0.14em] sm:tracking-[0.2em] text-white uppercase leading-none drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)]"
           >
             DEARGOD
           </h1>
           <div 
             style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-            className="text-xl sm:text-2xl md:text-3xl font-anton tracking-[0.32em] sm:tracking-[0.38em] text-white uppercase leading-none mt-2 sm:mt-3 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]"
+            className="text-lg sm:text-2xl md:text-3xl font-anton tracking-[0.3em] sm:tracking-[0.38em] text-white uppercase leading-none mt-2 sm:mt-3 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]"
           >
             MEMBERS
           </div>
         </div>
 
         {/* 2. THREE STATS COUNTERS: FOUNDERS / LEADERS / MEMBERS */}
-        <div className="flex items-center justify-center gap-8 sm:gap-16 md:gap-24 mb-8 sm:mb-10 select-none">
+        <div className="flex items-center justify-center gap-6 sm:gap-16 md:gap-24 mb-8 sm:mb-10 select-none">
           {/* Stat 1: FOUNDERS */}
           <button 
             type="button"

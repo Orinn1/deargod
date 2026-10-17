@@ -548,40 +548,40 @@ export default function DearGodAdminPage() {
       {/* DASHBOARD CONTENT CONTAINER */}
       <div className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 md:p-8 space-y-6">
         {/* TAB NAVIGATION */}
-        <div className="flex items-center justify-between border-b border-white/10 pb-4">
-          <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 no-scrollbar">
             <button
               onClick={() => setActiveTab('members')}
-              className={`flex items-center gap-2 px-4 sm:px-5 py-2 rounded-xl font-mono text-xs font-bold uppercase tracking-wider transition-all ${
+              className={`flex items-center gap-2 px-3.5 sm:px-5 py-2.5 sm:py-2 rounded-xl font-mono text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap active:scale-95 ${
                 activeTab === 'members'
                   ? 'bg-white text-black shadow-lg shadow-white/10'
                   : 'bg-white/[0.04] text-zinc-400 hover:text-white hover:bg-white/[0.08] border border-white/10'
               }`}
             >
               <Users className="w-4 h-4" />
-              <span>จัดการสมาชิก ({members.length})</span>
+              <span>สมาชิก ({members.length})</span>
             </button>
 
             <button
               onClick={() => setActiveTab('music')}
-              className={`flex items-center gap-2 px-4 sm:px-5 py-2 rounded-xl font-mono text-xs font-bold uppercase tracking-wider transition-all ${
+              className={`flex items-center gap-2 px-3.5 sm:px-5 py-2.5 sm:py-2 rounded-xl font-mono text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap active:scale-95 ${
                 activeTab === 'music'
                   ? 'bg-white text-black shadow-lg shadow-white/10'
                   : 'bg-white/[0.04] text-zinc-400 hover:text-white hover:bg-white/[0.08] border border-white/10'
               }`}
             >
               <Music className="w-4 h-4" />
-              <span>จัดการเพลงเว็บ</span>
+              <span>เพลงเว็บ</span>
             </button>
           </div>
 
           {activeTab === 'members' && (
             <button
               onClick={handleOpenCreateModal}
-              className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-xl bg-white text-black font-mono font-bold text-xs uppercase tracking-wider hover:bg-zinc-200 active:scale-95 transition-all shadow-md"
+              className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-2 rounded-xl bg-white text-black font-mono font-bold text-xs uppercase tracking-wider hover:bg-zinc-200 active:scale-95 transition-all shadow-md w-full sm:w-auto"
             >
               <Plus className="w-4 h-4" />
-              <span>เพิ่มสมาชิก</span>
+              <span>+ เพิ่มสมาชิกใหม่</span>
             </button>
           )}
         </div>
@@ -647,14 +647,14 @@ export default function DearGodAdminPage() {
               </div>
 
               {/* Role filter buttons */}
-              <div className="flex items-center gap-1.5 flex-wrap w-full sm:w-auto">
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 no-scrollbar w-full sm:w-auto">
                 {(['All', 'Founder', 'Leader', 'Support', 'Member'] as const).map((r) => (
                   <button
                     key={r}
                     onClick={() => setSelectedRoleFilter(r)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-mono tracking-wider uppercase transition-all ${
+                    className={`px-3 py-1.5 rounded-lg text-xs font-mono tracking-wider uppercase transition-all whitespace-nowrap active:scale-95 ${
                       selectedRoleFilter === r
-                        ? 'bg-white text-black font-bold'
+                        ? 'bg-white text-black font-bold shadow-sm'
                         : 'bg-white/[0.04] text-zinc-400 hover:text-white hover:bg-white/[0.08]'
                     }`}
                   >
@@ -664,7 +664,7 @@ export default function DearGodAdminPage() {
               </div>
             </div>
 
-            {/* MEMBERS TABLE */}
+            {/* MEMBERS LIST CONTAINER */}
             <div className="rounded-2xl border border-white/10 bg-[#0C0D13]/80 backdrop-blur-md overflow-hidden shadow-xl">
               {loadingMembers ? (
                 <div className="py-20 flex flex-col items-center justify-center text-zinc-500 font-mono text-xs gap-3">
@@ -676,109 +676,188 @@ export default function DearGodAdminPage() {
                   <span>[ ไม่พบข้อมูลสมาชิกตามที่ค้นหา ]</span>
                 </div>
               ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs font-mono border-collapse">
-                    <thead>
-                      <tr className="border-b border-white/10 bg-white/[0.02] text-zinc-400 text-[11px] uppercase tracking-widest">
-                        <th className="py-3.5 px-4 w-20">ID</th>
-                        <th className="py-3.5 px-4 w-16">AVATAR</th>
-                        <th className="py-3.5 px-4">NAME</th>
-                        <th className="py-3.5 px-4 w-32">ROLE</th>
-                        <th className="py-3.5 px-4">FACEBOOK LINK</th>
-                        <th className="py-3.5 px-4 text-right w-28">ACTIONS</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-white/[0.05]">
-                      {filteredMembers.map((m) => (
-                        <tr
-                          key={m.id}
-                          className="hover:bg-white/[0.03] transition-colors group/row"
-                        >
-                          {/* ID */}
-                          <td className="py-3.5 px-4 font-bold text-zinc-400">
-                            <span className="px-2 py-0.5 rounded bg-white/[0.04] border border-white/10">
-                              {m.memberId || `#${m.id}`}
-                            </span>
-                          </td>
+                <>
+                  {/* 1. MOBILE CARD VIEW (Phone & Small Screens) */}
+                  <div className="block md:hidden divide-y divide-white/[0.07]">
+                    {filteredMembers.map((m) => (
+                      <div key={m.id} className="p-3.5 flex flex-col gap-3 hover:bg-white/[0.02] transition-colors">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-xl bg-black/80 border border-white/15 p-1 flex items-center justify-center overflow-hidden flex-shrink-0 shadow-sm">
+                            <img
+                              src={m.avatar || DEFAULT_AVATAR}
+                              alt={m.name}
+                              onError={(e) => {
+                                e.currentTarget.src = DEFAULT_AVATAR;
+                              }}
+                              className="w-full h-full object-contain"
+                            />
+                          </div>
 
-                          {/* Avatar */}
-                          <td className="py-3.5 px-4">
-                            <div className="w-10 h-10 rounded-xl bg-black/80 border border-white/15 p-1 flex items-center justify-center overflow-hidden">
-                              <img
-                                src={m.avatar || DEFAULT_AVATAR}
-                                alt={m.name}
-                                onError={(e) => {
-                                  e.currentTarget.src = DEFAULT_AVATAR;
-                                }}
-                                className="w-full h-full object-contain"
-                              />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="font-bold text-sm text-white tracking-wide uppercase truncate">
+                                {m.name}
+                              </span>
+                              <span
+                                className={`inline-block px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${
+                                  m.role === 'Founder'
+                                    ? 'bg-white/20 border-white/60 text-white'
+                                    : m.role === 'Leader'
+                                    ? 'bg-white/10 border-white/40 text-zinc-200'
+                                    : 'bg-white/[0.04] border-white/15 text-zinc-400'
+                                }`}
+                              >
+                                {m.role}
+                              </span>
                             </div>
-                          </td>
 
-                          {/* Name */}
-                          <td className="py-3.5 px-4">
-                            <span className="font-bold text-sm text-white tracking-wide uppercase">
-                              {m.name}
-                            </span>
-                          </td>
-
-                          {/* Role Badge */}
-                          <td className="py-3.5 px-4">
-                            <span
-                              className={`inline-block px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${
-                                m.role === 'Founder'
-                                  ? 'bg-white/20 border-white/60 text-white shadow-sm'
-                                  : m.role === 'Leader'
-                                  ? 'bg-white/10 border-white/40 text-zinc-200'
-                                  : 'bg-white/[0.04] border-white/15 text-zinc-400'
-                              }`}
-                            >
-                              {m.role}
-                            </span>
-                          </td>
-
-                          {/* Facebook */}
-                          <td className="py-3.5 px-4 text-zinc-400">
-                            {m.facebook ? (
-                              <a
-                                href={m.facebook}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="hover:text-white transition-colors flex items-center gap-1.5 max-w-xs truncate"
-                                title={m.facebook}
-                              >
-                                <span className="truncate">{m.facebook}</span>
-                                <ExternalLink className="w-3 h-3 flex-shrink-0" />
-                              </a>
-                            ) : (
-                              <span className="text-zinc-600">-</span>
-                            )}
-                          </td>
-
-                          {/* Actions */}
-                          <td className="py-3.5 px-4 text-right">
-                            <div className="flex items-center justify-end gap-1.5">
-                              <button
-                                onClick={() => handleOpenEditModal(m)}
-                                className="p-2 rounded-lg bg-white/[0.05] hover:bg-white/15 border border-white/10 hover:border-white/40 text-zinc-300 hover:text-white transition-all"
-                                title="แก้ไขข้อมูล"
-                              >
-                                <Edit2 className="w-3.5 h-3.5" />
-                              </button>
-                              <button
-                                onClick={() => setDeleteTarget(m)}
-                                className="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 hover:border-red-500/60 text-red-400 hover:text-red-300 transition-all"
-                                title="ลบสมาชิก"
-                              >
-                                <Trash2 className="w-3.5 h-3.5" />
-                              </button>
+                            <div className="flex items-center gap-2.5 mt-1">
+                              <span className="text-[10px] font-mono font-bold text-zinc-300 bg-white/[0.06] px-1.5 py-0.5 rounded border border-white/10">
+                                {m.memberId || `#${m.id}`}
+                              </span>
+                              {m.facebook ? (
+                                <a
+                                  href={m.facebook}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-[11px] font-mono text-blue-400 hover:text-blue-300 underline inline-flex items-center gap-1 truncate max-w-[150px]"
+                                >
+                                  <span>Facebook</span>
+                                  <ExternalLink className="w-2.5 h-2.5 flex-shrink-0" />
+                                </a>
+                              ) : (
+                                <span className="text-[10px] font-mono text-zinc-600">ไม่มี Facebook</span>
+                              )}
                             </div>
-                          </td>
+                          </div>
+                        </div>
+
+                        {/* Mobile Actions: Touch-friendly full-width buttons */}
+                        <div className="grid grid-cols-2 gap-2 pt-1 border-t border-white/[0.05]">
+                          <button
+                            onClick={() => handleOpenEditModal(m)}
+                            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-white/[0.07] hover:bg-white/15 border border-white/15 text-xs font-mono font-semibold text-white transition-all active:scale-95"
+                          >
+                            <Edit2 className="w-3.5 h-3.5 text-zinc-300" />
+                            <span>แก้ไข</span>
+                          </button>
+                          <button
+                            onClick={() => setDeleteTarget(m)}
+                            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-xs font-mono font-semibold text-red-400 transition-all active:scale-95"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                            <span>ลบ</span>
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* 2. DESKTOP TABLE VIEW (Tablets & Desktops) */}
+                  <div className="hidden md:block overflow-x-auto">
+                    <table className="w-full text-left text-xs font-mono border-collapse">
+                      <thead>
+                        <tr className="border-b border-white/10 bg-white/[0.02] text-zinc-400 text-[11px] uppercase tracking-widest">
+                          <th className="py-3.5 px-4 w-20">ID</th>
+                          <th className="py-3.5 px-4 w-16">AVATAR</th>
+                          <th className="py-3.5 px-4">NAME</th>
+                          <th className="py-3.5 px-4 w-32">ROLE</th>
+                          <th className="py-3.5 px-4">FACEBOOK LINK</th>
+                          <th className="py-3.5 px-4 text-right w-28">ACTIONS</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody className="divide-y divide-white/[0.05]">
+                        {filteredMembers.map((m) => (
+                          <tr
+                            key={m.id}
+                            className="hover:bg-white/[0.03] transition-colors group/row"
+                          >
+                            {/* ID */}
+                            <td className="py-3.5 px-4 font-bold text-zinc-400">
+                              <span className="px-2 py-0.5 rounded bg-white/[0.04] border border-white/10">
+                                {m.memberId || `#${m.id}`}
+                              </span>
+                            </td>
+
+                            {/* Avatar */}
+                            <td className="py-3.5 px-4">
+                              <div className="w-10 h-10 rounded-xl bg-black/80 border border-white/15 p-1 flex items-center justify-center overflow-hidden">
+                                <img
+                                  src={m.avatar || DEFAULT_AVATAR}
+                                  alt={m.name}
+                                  onError={(e) => {
+                                    e.currentTarget.src = DEFAULT_AVATAR;
+                                  }}
+                                  className="w-full h-full object-contain"
+                                />
+                              </div>
+                            </td>
+
+                            {/* Name */}
+                            <td className="py-3.5 px-4">
+                              <span className="font-bold text-sm text-white tracking-wide uppercase">
+                                {m.name}
+                              </span>
+                            </td>
+
+                            {/* Role Badge */}
+                            <td className="py-3.5 px-4">
+                              <span
+                                className={`inline-block px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${
+                                  m.role === 'Founder'
+                                    ? 'bg-white/20 border-white/60 text-white shadow-sm'
+                                    : m.role === 'Leader'
+                                    ? 'bg-white/10 border-white/40 text-zinc-200'
+                                    : 'bg-white/[0.04] border-white/15 text-zinc-400'
+                                }`}
+                              >
+                                {m.role}
+                              </span>
+                            </td>
+
+                            {/* Facebook */}
+                            <td className="py-3.5 px-4 text-zinc-400">
+                              {m.facebook ? (
+                                <a
+                                  href={m.facebook}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="hover:text-white transition-colors flex items-center gap-1.5 max-w-xs truncate"
+                                  title={m.facebook}
+                                >
+                                  <span className="truncate">{m.facebook}</span>
+                                  <ExternalLink className="w-3 h-3 flex-shrink-0" />
+                                </a>
+                              ) : (
+                                <span className="text-zinc-600">-</span>
+                              )}
+                            </td>
+
+                            {/* Actions */}
+                            <td className="py-3.5 px-4 text-right">
+                              <div className="flex items-center justify-end gap-1.5">
+                                <button
+                                  onClick={() => handleOpenEditModal(m)}
+                                  className="p-2 rounded-lg bg-white/[0.05] hover:bg-white/15 border border-white/10 hover:border-white/40 text-zinc-300 hover:text-white transition-all active:scale-95"
+                                  title="แก้ไขข้อมูล"
+                                >
+                                  <Edit2 className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  onClick={() => setDeleteTarget(m)}
+                                  className="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 hover:border-red-500/60 text-red-400 hover:text-red-300 transition-all active:scale-95"
+                                  title="ลบสมาชิก"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </>
               )}
             </div>
           </div>
@@ -933,21 +1012,22 @@ export default function DearGodAdminPage() {
 
       {/* CREATE / EDIT MEMBER MODAL */}
       {isMemberModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-          <div className="w-full max-w-lg rounded-3xl border border-white/20 bg-[#0E1017] p-6 sm:p-7 shadow-[0_25px_60px_rgba(0,0,0,0.95)] max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fade-in">
+          <div className="w-full max-w-lg rounded-2xl sm:rounded-3xl border border-white/20 bg-[#0E1017] p-4 sm:p-7 shadow-[0_25px_60px_rgba(0,0,0,0.95)] max-h-[92vh] overflow-y-auto">
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-5">
+            <div className="flex items-center justify-between border-b border-white/10 pb-3.5 mb-4 sm:mb-5">
               <div>
-                <h3 className="text-base font-bold text-white uppercase tracking-wider">
+                <h3 className="text-sm sm:text-base font-bold text-white uppercase tracking-wider">
                   {editingMember ? 'แก้ไขข้อมูลสมาชิก' : 'เพิ่มสมาชิกใหม่'}
                 </h3>
-                <p className="text-xs font-mono text-zinc-400">
+                <p className="text-[11px] sm:text-xs font-mono text-zinc-400">
                   {editingMember ? `ID: ${editingMember.memberId}` : 'กำหนดข้อมูลสมาชิกในคลาน DearGod'}
                 </p>
               </div>
               <button
                 onClick={() => setIsMemberModalOpen(false)}
-                className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/10"
+                className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/10 active:scale-95"
+                title="ปิด"
               >
                 <X className="w-5 h-5" />
               </button>
