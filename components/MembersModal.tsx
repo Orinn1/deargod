@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { User } from 'lucide-react';
-import { MEMBERS_DATA, Member } from '@/data/members';
+import { Member } from '@/data/members';
 
 interface MembersModalProps {
   isOpen: boolean;
@@ -12,10 +12,12 @@ interface MembersModalProps {
 
 export default function MembersModal({ isOpen, onClose }: MembersModalProps) {
   const [search, setSearch] = useState('');
-  const [members, setMembers] = useState<Member[]>(MEMBERS_DATA);
+  const [members, setMembers] = useState<Member[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!isOpen) return;
+    setIsLoading(true);
     fetch('/api/members')
       .then((res) => res.json())
       .then((data) => {
@@ -23,7 +25,10 @@ export default function MembersModal({ isOpen, onClose }: MembersModalProps) {
           setMembers(data.data);
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [isOpen]);
 
   if (!isOpen) return null;
@@ -76,7 +81,14 @@ export default function MembersModal({ isOpen, onClose }: MembersModalProps) {
 
         {/* Members Grid / List */}
         <div className="flex-1 overflow-y-auto pr-1 space-y-2.5">
-          {filtered.length === 0 ? (
+          {isLoading ? (
+            <div className="py-16 text-center flex flex-col items-center justify-center select-none">
+              <div className="w-6 h-6 rounded-full border-2 border-white/20 border-t-white animate-spin mb-3" />
+              <p className="text-zinc-400 font-mono text-xs uppercase tracking-widest animate-pulse">
+                SYNCHRONIZING WITH DATABASE...
+              </p>
+            </div>
+          ) : filtered.length === 0 ? (
             <div className="py-12 text-center text-zinc-500 font-mono text-xs uppercase tracking-widest">
               [ NO MEMBERS FOUND ]
             </div>

@@ -18,10 +18,12 @@ export default function PageLoader() {
   const [routeProgress, setRouteProgress] = useState(0);
   const [routeTitle, setRouteTitle] = useState('ACCESSING MEMBER ROSTER');
   const [routeSubtitle, setRouteSubtitle] = useState('SYNCHRONIZING DATABASE...');
+  const [routeStatusText, setRouteStatusText] = useState('INITIALIZING CONNECTION...');
   const [routeFadeOut, setRouteFadeOut] = useState(false);
 
-  // Reference to cancel timeouts on unmount
+  // References to cancel timeouts/intervals on unmount
   const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
+  const activeNavIntervalRef = useRef<NodeJS.Timeout[]>([]);
 
   // 1. Initial Page Load Animation (Cinematic 3-Second Boot Protocol - 3s Total)
   useEffect(() => {
@@ -104,36 +106,55 @@ export default function PageLoader() {
         if (href === '/members') {
           setRouteTitle('ACCESSING MEMBER ROSTER');
           setRouteSubtitle('SYNCHRONIZING TACTICAL DATA • 2K26');
+          setRouteStatusText('INITIALIZING CONNECTION...');
         } else {
           setRouteTitle('RETURNING TO COMMAND');
           setRouteSubtitle('INITIALIZING MAIN TERMINAL • PORTAL');
+          setRouteStatusText('CONNECTING TERMINAL...');
         }
 
         setRouteLoading(true);
         setRouteFadeOut(false);
-        setRouteProgress(15);
+        setRouteProgress(0);
 
-        // Animate rapid loading bar
-        let prog = 15;
+        // Clear any previous interval
+        activeNavIntervalRef.current.forEach(clearInterval);
+        activeNavIntervalRef.current = [];
+
+        const startTime = Date.now();
+        const ROUTE_DURATION = 2400; // ~2.4s progression + 0.6s fadeout = 3 seconds total
+
         const navInterval = setInterval(() => {
-          prog += 25;
-          if (prog >= 100) {
-            prog = 100;
+          const elapsed = Date.now() - startTime;
+          const current = Math.min(100, Math.floor((elapsed / ROUTE_DURATION) * 100));
+          setRouteProgress(current);
+
+          if (current < 25) {
+            setRouteStatusText('INITIALIZING CONNECTION...');
+          } else if (current < 55) {
+            setRouteStatusText(href === '/members' ? 'FETCHING MEMBER ROSTER...' : 'RECONNECTING MAIN COMMAND...');
+          } else if (current < 85) {
+            setRouteStatusText('SYNCHRONIZING ASSETS & AUDIO...');
+          } else if (current < 100) {
+            setRouteStatusText('VERIFYING ACCESS PERMISSIONS...');
+          } else {
+            setRouteStatusText('ACCESS GRANTED');
             clearInterval(navInterval);
             setRouteProgress(100);
 
             // Execute client-side router navigation
             router.push(href);
-          } else {
-            setRouteProgress(prog);
           }
-        }, 70);
+        }, 30);
+
+        activeNavIntervalRef.current.push(navInterval);
       }
     };
 
     document.addEventListener('click', handleLinkClick, true);
     return () => {
       document.removeEventListener('click', handleLinkClick, true);
+      activeNavIntervalRef.current.forEach(clearInterval);
     };
   }, [router]);
 
@@ -147,7 +168,7 @@ export default function PageLoader() {
 
       const t2 = setTimeout(() => {
         setRouteLoading(false);
-      }, 550);
+      }, 600);
 
       return () => {
         clearTimeout(t1);
@@ -200,7 +221,7 @@ export default function PageLoader() {
       {/* ============================================================ */}
       {routeLoading && (
         <div
-          className={`fixed inset-0 z-[9998] bg-[#050608]/95 backdrop-blur-xl flex flex-col items-center justify-center select-none transition-all duration-300 ease-out ${
+          className={`fixed inset-0 z-[9998] bg-[#050608]/95 backdrop-blur-xl flex flex-col items-center justify-center select-none transition-all duration-500 ease-out ${
             routeFadeOut ? 'opacity-0 pointer-events-none scale-95' : 'opacity-100 scale-100'
           }`}
         >
@@ -224,8 +245,8 @@ export default function PageLoader() {
             </div>
 
             <div className="w-56 sm:w-64 flex items-center justify-between text-[9px] font-mono tracking-widest text-zinc-500 uppercase">
-              <span>LOADING ROSTER</span>
-              <span className="text-white font-bold tabular-nums">{routeProgress}%</span>
+              <span className="truncate max-w-[170px] text-left">{routeStatusText}</span>
+              <span className="text-white font-bold tabular-nums text-right">{routeProgress}%</span>
             </div>
           </div>
         </div>

@@ -4,15 +4,17 @@ import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { Search, X, ArrowLeft } from 'lucide-react';
 import SnowEffect from '@/components/SnowEffect';
-import { MEMBERS_DATA, Member, MemberRole } from '@/data/members';
+import { Member, MemberRole } from '@/data/members';
 
 export default function MembersPage() {
   const [selectedRole, setSelectedRole] = useState<'All' | MemberRole>('All');
   const [searchQuery, setSearchQuery] = useState('');
-  const [membersList, setMembersList] = useState<Member[]>(MEMBERS_DATA);
+  const [membersList, setMembersList] = useState<Member[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch latest members dynamically on mount
+  // Fetch latest members dynamically on mount directly from database
   useEffect(() => {
+    setIsLoading(true);
     fetch('/api/members')
       .then((res) => res.json())
       .then((resData) => {
@@ -20,7 +22,10 @@ export default function MembersPage() {
           setMembersList(resData.data);
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   // Counts by role
@@ -114,7 +119,7 @@ export default function MembersPage() {
             title="กรองเฉพาะ FOUNDERS"
           >
             <span className="text-3xl sm:text-5xl md:text-6xl font-anton text-white tabular-nums group-hover:scale-110 transition-transform">
-              {counts.founder}
+              {isLoading ? '—' : counts.founder}
             </span>
             <span className={`text-xs sm:text-sm font-anton tracking-[0.2em] uppercase mt-1 transition-colors ${
               selectedRole === 'Founder' ? 'text-white' : 'text-zinc-400 group-hover:text-white'
@@ -134,7 +139,7 @@ export default function MembersPage() {
             title="กรองเฉพาะ LEADERS"
           >
             <span className="text-3xl sm:text-5xl md:text-6xl font-anton text-white tabular-nums group-hover:scale-110 transition-transform">
-              {counts.leader}
+              {isLoading ? '—' : counts.leader}
             </span>
             <span className={`text-xs sm:text-sm font-anton tracking-[0.2em] uppercase mt-1 transition-colors ${
               selectedRole === 'Leader' ? 'text-white' : 'text-zinc-400 group-hover:text-white'
@@ -154,7 +159,7 @@ export default function MembersPage() {
             title="กรองเฉพาะ MEMBERS"
           >
             <span className="text-3xl sm:text-5xl md:text-6xl font-anton text-white tabular-nums group-hover:scale-110 transition-transform">
-              {counts.member}
+              {isLoading ? '—' : counts.member}
             </span>
             <span className={`text-xs sm:text-sm font-anton tracking-[0.2em] uppercase mt-1 transition-colors ${
               selectedRole === 'Member' ? 'text-white' : 'text-zinc-400 group-hover:text-white'
@@ -192,7 +197,17 @@ export default function MembersPage() {
         </div>
 
         {/* MEMBERS CONTENT */}
-        {filteredMembers.length === 0 ? (
+        {isLoading ? (
+          <div className="py-24 sm:py-32 text-center flex flex-col items-center justify-center select-none">
+            <div className="w-8 h-8 rounded-full border-2 border-white/20 border-t-white animate-spin mb-4" />
+            <p className="text-zinc-400 font-mono text-xs uppercase tracking-[0.25em] animate-pulse">
+              SYNCHRONIZING WITH DATABASE...
+            </p>
+            <p className="text-zinc-600 font-mono text-[10px] uppercase tracking-widest mt-1">
+              CONNECTING SECURE FIRESTORE PROTOCOL
+            </p>
+          </div>
+        ) : filteredMembers.length === 0 ? (
           <div className="py-16 sm:py-20 text-center flex flex-col items-center justify-center">
             <p className="text-zinc-500 font-mono text-xs uppercase tracking-widest">
               [ NO MEMBERS FOUND ]
