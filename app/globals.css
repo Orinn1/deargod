@@ -1,0 +1,531 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Bodoni+Moda:ital,opsz,wght@0,6..96,700;0,6..96,900;1,6..96,700&family=Cinzel:wght@400;600;700;800;900&family=Outfit:wght@700;800;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Rajdhani:wght@700&family=Syne:wght@700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #090A0D;
+  --foreground: #EAE6DF;
+}
+
+body {
+  color: var(--foreground);
+  background-color: var(--background);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Font classes */
+.font-anton {
+  font-family: var(--font-anton), 'Anton', sans-serif !important;
+}
+
+.font-playfair {
+  font-family: 'Playfair Display', serif;
+}
+
+.font-bodoni {
+  font-family: 'Bodoni Moda', serif;
+}
+
+.font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+.font-syne {
+  font-family: 'Syne', sans-serif;
+}
+
+.font-outfit {
+  font-family: 'Outfit', sans-serif;
+}
+
+.font-rajdhani {
+  font-family: 'Rajdhani', sans-serif;
+}
+
+/* Subtle cinematic grain/vignette */
+.cinematic-vignette {
+  background: radial-gradient(circle at center, transparent 40%, rgba(5, 6, 8, 0.85) 90%, rgba(2, 3, 4, 0.98) 100%);
+}
+
+/* Keyframes for falling snowflakes */
+@keyframes snowfall {
+  0% {
+    transform: translateY(-20px) translateX(0px) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.85;
+  }
+  85% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(105vh) translateX(45px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.snowflake {
+  position: absolute;
+  top: -20px;
+  pointer-events: none;
+  animation-name: snowfall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Swyft-style tactical background grid */
+.tactical-grid {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to bottom, black 30%, transparent 95%);
+}
+
+/* Swyft 171 Hero 39 Shimmer Effect (Crisp letter sweep, brilliant metallic shine) */
+.hero-brand-39 {
+  position: relative;
+  display: inline-block;
+  vertical-align: baseline;
+  width: max-content;
+  background: linear-gradient(180deg, #FF4554 0%, #DC2626 48%, #881313 85%, #450A0A 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  isolation: isolate;
+}
+
+.hero-brand-39::after {
+  content: attr(data-shine-text);
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 35%,
+    rgba(255, 255, 255, 0.6) 45%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(255, 255, 255, 0.6) 55%,
+    transparent 65%,
+    transparent 100%
+  );
+  background-size: 250% 100%;
+  background-position: 140% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: hero39Sweep 2.6s ease-in-out infinite;
+  will-change: background-position;
+}
+
+@keyframes hero39Sweep {
+  0% {
+    background-position: 140% 0;
+  }
+  100% {
+    background-position: -40% 0;
+  }
+}
+
+@keyframes shimmerBar {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer-bar {
+  animation: shimmerBar 1.6s infinite ease-in-out;
+}
+
+@keyframes popupBounce {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.8);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.08);
+  }
+  85% {
+    transform: translateY(1px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-popup-bounce {
+  animation: popupBounce 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Hide Next.js devtools indicator button ("N" icon at bottom-left) */
+nextjs-portal,
+[data-nextjs-toast],
+[data-nextjs-dev-overlay],
+[data-nextjs-dialog] {
+  display: none !important;
+}
+
+/* Mobile Utilities */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* =========================================================================
+   DEARGOD "ซ่าๆ" (STATIC / TV NOISE / GLITCH) FADE-IN ANIMATION SYSTEM
+   ========================================================================= */
+
+/* Main logo entry: Rapid opacity stutter + scale pop + CRT phosphor snap (no red glow) */
+@keyframes staticFlickerIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translate(-3px, 2px);
+    filter: brightness(3.5) contrast(200%);
+  }
+  6% {
+    opacity: 0.5;
+    transform: scale(1.02) translate(4px, -1px);
+    filter: brightness(2.2) contrast(180%);
+  }
+  12% {
+    opacity: 0.08;
+    transform: scale(0.98) translate(-2px, 0);
+    filter: brightness(4) contrast(250%);
+  }
+  18% {
+    opacity: 0.85;
+    transform: scale(1.01) translate(3px, 1px);
+    filter: brightness(1.8);
+  }
+  25% {
+    opacity: 0.2;
+    transform: scale(0.99) translate(-3px, -1px);
+    filter: brightness(0.6);
+  }
+  34% {
+    opacity: 0.95;
+    transform: scale(1.01) translate(2px, -1px);
+    filter: brightness(1.4);
+  }
+  44% {
+    opacity: 0.45;
+    transform: scale(1) translate(-1px, 1px);
+    filter: brightness(1.1);
+  }
+  56% {
+    opacity: 1;
+    transform: scale(1.005) translate(1px, 0);
+    filter: brightness(1.25);
+  }
+  70% {
+    opacity: 0.85;
+    transform: scale(1) translate(0, 0);
+    filter: brightness(1.05);
+  }
+  82% {
+    opacity: 1;
+    transform: scale(1) translate(0, 0);
+    filter: brightness(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translate(0, 0);
+    filter: brightness(1);
+  }
+}
+
+.logo-static-flicker {
+  animation: staticFlickerIn 1.35s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  will-change: transform, opacity, filter;
+}
+
+/* Red chromatic aberration slice glitch */
+@keyframes glitchRedSlice {
+  0% {
+    opacity: 0;
+    clip-path: inset(50% 0 30% 0);
+    transform: translate(-6px, 1px);
+    filter: drop-shadow(-8px 0 0 rgba(255, 20, 60, 0.9));
+  }
+  8% {
+    opacity: 0.85;
+    clip-path: inset(10% 0 65% 0);
+    transform: translate(-10px, -2px);
+    filter: drop-shadow(-10px 0 0 rgba(255, 20, 60, 0.95));
+  }
+  16% {
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+  }
+  26% {
+    opacity: 0.9;
+    clip-path: inset(70% 0 12% 0);
+    transform: translate(-8px, 2px);
+    filter: drop-shadow(-6px 0 0 rgba(255, 20, 60, 0.8));
+  }
+  38% {
+    opacity: 0.15;
+    clip-path: inset(40% 0 45% 0);
+    transform: translate(-4px, 0);
+  }
+  50% {
+    opacity: 0.7;
+    clip-path: inset(25% 0 55% 0);
+    transform: translate(-5px, -1px);
+    filter: drop-shadow(-4px 0 0 rgba(255, 20, 60, 0.7));
+  }
+  65% {
+    opacity: 0.2;
+    clip-path: inset(80% 0 5% 0);
+    transform: translate(-2px, 0);
+  }
+  78% {
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+    transform: translate(0, 0);
+  }
+  100% {
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+    transform: translate(0, 0);
+  }
+}
+
+.logo-glitch-red {
+  animation: glitchRedSlice 1.35s ease-out forwards;
+  will-change: transform, opacity, clip-path;
+}
+
+/* Cyan chromatic aberration slice glitch */
+@keyframes glitchCyanSlice {
+  0% {
+    opacity: 0;
+    clip-path: inset(20% 0 60% 0);
+    transform: translate(6px, -1px);
+    filter: drop-shadow(8px 0 0 rgba(0, 230, 255, 0.9));
+  }
+  10% {
+    opacity: 0.85;
+    clip-path: inset(60% 0 15% 0);
+    transform: translate(9px, 2px);
+    filter: drop-shadow(10px 0 0 rgba(0, 230, 255, 0.95));
+  }
+  20% {
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+  }
+  30% {
+    opacity: 0.9;
+    clip-path: inset(30% 0 45% 0);
+    transform: translate(7px, -2px);
+    filter: drop-shadow(6px 0 0 rgba(0, 230, 255, 0.8));
+  }
+  44% {
+    opacity: 0.2;
+    clip-path: inset(15% 0 70% 0);
+    transform: translate(4px, 1px);
+  }
+  58% {
+    opacity: 0.65;
+    clip-path: inset(50% 0 30% 0);
+    transform: translate(5px, 0);
+    filter: drop-shadow(4px 0 0 rgba(0, 230, 255, 0.7));
+  }
+  72% {
+    opacity: 0.1;
+    clip-path: inset(75% 0 10% 0);
+    transform: translate(2px, 0);
+  }
+  85% {
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+    transform: translate(0, 0);
+  }
+  100% {
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+    transform: translate(0, 0);
+  }
+}
+
+.logo-glitch-cyan {
+  animation: glitchCyanSlice 1.35s ease-out forwards;
+  will-change: transform, opacity, clip-path;
+}
+
+/* CRT Scanlines Overlay */
+.scanlines-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0) 50%,
+    rgba(0, 0, 0, 0.45) 50%,
+    rgba(0, 0, 0, 0.45)
+  );
+  background-size: 100% 4px;
+}
+
+/* =========================================================================
+   RECURRING GLITCH LOOP ANIMATIONS (Every 3-5s)
+   ========================================================================= */
+
+@keyframes glitchLoopWave {
+  0% {
+    transform: translate(0, 0) scale(1);
+    filter: brightness(1) drop-shadow(0 4px 18px rgba(0,0,0,0.95));
+  }
+  8% {
+    transform: translate(-4px, 1px) skewX(2deg);
+    filter: brightness(1.7) contrast(160%) drop-shadow(0 4px 18px rgba(0,0,0,0.95));
+  }
+  18% {
+    transform: translate(5px, -1px) skewX(-2deg);
+    filter: brightness(0.8) contrast(130%) drop-shadow(0 4px 18px rgba(0,0,0,0.95));
+  }
+  30% {
+    transform: translate(-3px, 2px);
+    filter: brightness(1.5) drop-shadow(0 4px 18px rgba(0,0,0,0.95));
+  }
+  44% {
+    transform: translate(3px, 0) skewX(1deg);
+    filter: brightness(1.25);
+  }
+  60% {
+    transform: translate(-2px, -1px);
+    filter: brightness(0.9);
+  }
+  75% {
+    transform: translate(1px, 0);
+    filter: brightness(1.15);
+  }
+  90% {
+    transform: translate(-1px, 0);
+    filter: brightness(1.05);
+  }
+  100% {
+    transform: translate(0, 0) scale(1) skewX(0deg);
+    filter: brightness(1) drop-shadow(0 4px 18px rgba(0,0,0,0.95));
+  }
+}
+
+.logo-glitch-loop {
+  animation: glitchLoopWave 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  will-change: transform, filter;
+}
+
+/* Red channel loop twitch */
+@keyframes glitchRedLoopSlice {
+  0% {
+    opacity: 0;
+    clip-path: inset(45% 0 35% 0);
+    transform: translate(-5px, 1px);
+    filter: drop-shadow(-8px 0 0 rgba(255, 20, 60, 0.9));
+  }
+  15% {
+    opacity: 0.85;
+    clip-path: inset(15% 0 60% 0);
+    transform: translate(-9px, -2px);
+    filter: drop-shadow(-10px 0 0 rgba(255, 20, 60, 0.95));
+  }
+  30% {
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+  }
+  45% {
+    opacity: 0.8;
+    clip-path: inset(65% 0 15% 0);
+    transform: translate(-7px, 2px);
+    filter: drop-shadow(-6px 0 0 rgba(255, 20, 60, 0.8));
+  }
+  60% {
+    opacity: 0.25;
+    clip-path: inset(30% 0 50% 0);
+    transform: translate(-3px, 0);
+  }
+  80% {
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+    transform: translate(0, 0);
+  }
+  100% {
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+    transform: translate(0, 0);
+  }
+}
+
+.logo-glitch-red-loop {
+  animation: glitchRedLoopSlice 0.9s ease-out forwards;
+  will-change: transform, opacity, clip-path;
+}
+
+/* Cyan channel loop twitch */
+@keyframes glitchCyanLoopSlice {
+  0% {
+    opacity: 0;
+    clip-path: inset(25% 0 55% 0);
+    transform: translate(5px, -1px);
+    filter: drop-shadow(8px 0 0 rgba(0, 230, 255, 0.9));
+  }
+  15% {
+    opacity: 0.85;
+    clip-path: inset(55% 0 20% 0);
+    transform: translate(9px, 2px);
+    filter: drop-shadow(10px 0 0 rgba(0, 230, 255, 0.95));
+  }
+  30% {
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+  }
+  45% {
+    opacity: 0.8;
+    clip-path: inset(25% 0 45% 0);
+    transform: translate(7px, -2px);
+    filter: drop-shadow(6px 0 0 rgba(0, 230, 255, 0.8));
+  }
+  60% {
+    opacity: 0.25;
+    clip-path: inset(40% 0 30% 0);
+    transform: translate(3px, 1px);
+  }
+  80% {
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+    transform: translate(0, 0);
+  }
+  100% {
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+    transform: translate(0, 0);
+  }
+}
+
+.logo-glitch-cyan-loop {
+  animation: glitchCyanLoopSlice 0.9s ease-out forwards;
+  will-change: transform, opacity, clip-path;
+}
+
+
+
