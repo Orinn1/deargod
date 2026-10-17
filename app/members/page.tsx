@@ -212,8 +212,16 @@ export default function MembersPage() {
             {/* 1. FOUNDER SECTION (Elite VIP Showcase) */}
             {(selectedRole === 'All' || selectedRole === 'Founder') && founderList.length > 0 && (
               <section>
-                <SectionHeader title="FOUNDER" count={founderList.length} />
-                <div className="flex justify-center max-w-xl mx-auto px-2">
+                <SectionHeader title={founderList.length > 1 ? "FOUNDERS" : "FOUNDER"} count={founderList.length} />
+                <div
+                  className={`grid gap-6 mx-auto px-2 ${
+                    founderList.length === 1
+                      ? 'max-w-xl'
+                      : founderList.length === 2
+                      ? 'grid-cols-1 md:grid-cols-2 max-w-4xl'
+                      : 'grid-cols-1 md:grid-cols-2 xl:grid-cols-4 max-w-[1500px]'
+                  }`}
+                >
                   {founderList.map((m) => (
                     <FounderShowcaseCard key={m.id} member={m} />
                   ))}
@@ -420,14 +428,14 @@ function FounderShowcaseCard({ member }: { member: Member }) {
   const avatarSrc = member.avatar || DEFAULT_AVATAR;
 
   return (
-    <div className="w-full max-w-xl relative group/founder">
+    <div className="w-full relative group/founder">
       {/* Outer ambient glow behind card */}
-      <div className="absolute -inset-1 rounded-3xl bg-gradient-to-b from-white/20 via-white/5 to-transparent blur-xl opacity-40 group-hover/founder:opacity-75 transition-opacity duration-500 pointer-events-none" />
+      <div className="absolute -inset-0.5 rounded-3xl bg-gradient-to-b from-white/15 to-transparent blur-md opacity-30 group-hover/founder:opacity-60 transition-opacity duration-300 pointer-events-none" />
 
       {/* Main VIP Founder Card */}
-      <div className="relative rounded-3xl border border-white/30 hover:border-white/70 bg-gradient-to-b from-[#13151D] via-[#0C0D13] to-[#07080B] p-6 sm:p-8 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(255,255,255,0.06)] transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+      <div className="relative rounded-3xl border border-white/30 hover:border-white/70 bg-gradient-to-b from-[#13151D] via-[#0C0D13] to-[#07080B] p-5 sm:p-6 lg:p-7 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(255,255,255,0.06)] transition-all duration-300 hover:-translate-y-1 overflow-hidden">
         {/* Top Tactical Status Bar */}
-        <div className="flex items-center justify-between gap-3 mb-6 relative z-10 border-b border-white/[0.08] pb-3">
+        <div className="flex items-center justify-between gap-3 mb-5 relative z-10 border-b border-white/[0.08] pb-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/20 text-[11px] font-mono tracking-widest text-white uppercase shadow-sm">
             <span className="font-bold">FOUNDER</span>
             <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse ml-0.5" />
@@ -444,25 +452,25 @@ function FounderShowcaseCard({ member }: { member: Member }) {
         </div>
 
         {/* Card Center: Avatar & Info in sleek architectural composition */}
-        <div className="flex flex-col sm:flex-row items-center gap-5 sm:gap-7 relative z-10">
+        <div className="flex items-center gap-4 sm:gap-6 relative z-10">
           {/* Glowing Avatar Frame */}
           <div className="relative flex-shrink-0">
             {/* Halo ring */}
-            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl p-[2px] bg-gradient-to-b from-white via-zinc-400 to-zinc-800 shadow-[0_0_25px_rgba(255,255,255,0.25)] group-hover/founder:shadow-[0_0_35px_rgba(255,255,255,0.4)] transition-all duration-300">
-              <div className="w-full h-full rounded-2xl bg-black/80 flex items-center justify-center overflow-hidden border border-black/40 p-2">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl p-[2px] bg-gradient-to-b from-white via-zinc-400 to-zinc-800 shadow-[0_0_20px_rgba(255,255,255,0.2)] group-hover/founder:shadow-[0_0_30px_rgba(255,255,255,0.35)] transition-all duration-300">
+              <div className="w-full h-full rounded-2xl bg-black/80 flex items-center justify-center overflow-hidden border border-black/40 p-1.5">
                 <img
                   src={avatarSrc}
                   alt={member.name}
                   onError={(e) => { e.currentTarget.src = DEFAULT_AVATAR; }}
-                  className="w-full h-full object-contain filter drop-shadow-[0_0_12px_rgba(255,255,255,0.2)] group-hover/founder:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-contain filter drop-shadow-[0_0_10px_rgba(255,255,255,0.2)] group-hover/founder:scale-105 transition-transform duration-300"
                 />
               </div>
             </div>
           </div>
 
           {/* Member Typography */}
-          <div className="flex-1 text-center sm:text-left min-w-0">
-            <h3 className="text-2xl sm:text-3xl font-black text-white uppercase tracking-wider leading-tight break-words drop-shadow-[0_2px_10px_rgba(255,255,255,0.3)]">
+          <div className="flex-1 text-left min-w-0">
+            <h3 className="text-lg sm:text-xl lg:text-2xl font-black text-white uppercase tracking-wider leading-tight break-words drop-shadow-[0_2px_10px_rgba(255,255,255,0.3)]">
               {member.name}
             </h3>
             <p className="text-xs font-mono text-zinc-400 mt-1 truncate">
