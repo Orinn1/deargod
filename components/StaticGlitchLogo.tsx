@@ -42,7 +42,7 @@ export default function StaticGlitchLogo({
     // Fallback timer: in case event is missed or page loaded instantly
     const fallbackTimer = setTimeout(() => {
       setHasPageLoaded(true);
-    }, 1500);
+    }, 3500);
 
     return () => {
       window.removeEventListener('page-loader-done', onLoaderDone);

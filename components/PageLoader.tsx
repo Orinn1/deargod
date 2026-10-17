@@ -23,10 +23,10 @@ export default function PageLoader() {
   // Reference to cancel timeouts on unmount
   const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
 
-  // 1. Initial Page Load Animation (Cinematic 5-Second Boot Protocol)
+  // 1. Initial Page Load Animation (Cinematic 3-Second Boot Protocol - 3s Total)
   useEffect(() => {
     const startTime = Date.now();
-    const TARGET_DURATION = 5000; // ~5 seconds duration
+    const TARGET_DURATION = 2400; // ~2.4 seconds count up + fade out = 3 seconds total
 
     const interval = setInterval(() => {
       const elapsed = Date.now() - startTime;
@@ -55,15 +55,15 @@ export default function PageLoader() {
             window.dispatchEvent(new CustomEvent('page-loader-done'));
             document.body.classList.add('page-loaded');
           }
-        }, 300);
+        }, 150);
 
         const t2 = setTimeout(() => {
           setIsInitialLoading(false);
-        }, 1000);
+        }, 600);
 
         timeoutsRef.current.push(t1, t2);
       }
-    }, 40);
+    }, 30);
 
     return () => {
       clearInterval(interval);
@@ -163,7 +163,7 @@ export default function PageLoader() {
       {/* ============================================================ */}
       {isInitialLoading && (
         <div
-          className={`fixed inset-0 z-[9999] bg-[#050608] flex flex-col items-center justify-center select-none transition-all duration-700 ease-out ${
+          className={`fixed inset-0 z-[9999] bg-[#050608] flex flex-col items-center justify-center select-none transition-all duration-500 ease-out ${
             initialFadeOut ? 'opacity-0 pointer-events-none scale-105' : 'opacity-100'
           }`}
         >
