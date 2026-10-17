@@ -23,17 +23,31 @@ export default function PageLoader() {
   // Reference to cancel timeouts on unmount
   const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
 
-  // 1. Initial Page Load Animation
+  // 1. Initial Page Load Animation (Cinematic 5-Second Boot Protocol)
   useEffect(() => {
-    let current = 0;
+    const startTime = Date.now();
+    const TARGET_DURATION = 5000; // ~5 seconds duration
+
     const interval = setInterval(() => {
-      // Smooth accelerated progression
-      current += Math.floor(Math.random() * 8) + 4;
-      if (current >= 100) {
-        current = 100;
-        clearInterval(interval);
-        setInitialProgress(100);
+      const elapsed = Date.now() - startTime;
+      const progressRatio = Math.min(1, elapsed / TARGET_DURATION);
+      const current = Math.min(100, Math.floor(progressRatio * 100));
+
+      setInitialProgress(current);
+
+      if (current < 20) {
+        setInitialStatus('INITIALIZING PROTOCOL...');
+      } else if (current < 45) {
+        setInitialStatus('LOADING ASSETS & AUDIO...');
+      } else if (current < 70) {
+        setInitialStatus('CONNECTING SECURE DATABASE...');
+      } else if (current < 90) {
+        setInitialStatus('DECRYPTING CLAN DOSSIER...');
+      } else if (current < 100) {
+        setInitialStatus('VERIFYING CREDENTIALS...');
+      } else {
         setInitialStatus('SYSTEM READY');
+        clearInterval(interval);
 
         const t1 = setTimeout(() => {
           setInitialFadeOut(true);
@@ -41,26 +55,15 @@ export default function PageLoader() {
             window.dispatchEvent(new CustomEvent('page-loader-done'));
             document.body.classList.add('page-loaded');
           }
-        }, 150);
+        }, 300);
 
         const t2 = setTimeout(() => {
           setIsInitialLoading(false);
-        }, 750);
+        }, 1000);
 
         timeoutsRef.current.push(t1, t2);
-      } else {
-        setInitialProgress(current);
-        if (current < 25) {
-          setInitialStatus('INITIALIZING PROTOCOL...');
-        } else if (current < 55) {
-          setInitialStatus('LOADING ASSETS & AUDIO...');
-        } else if (current < 85) {
-          setInitialStatus('CONNECTING SECURE DATABASE...');
-        } else {
-          setInitialStatus('VERIFYING CREDENTIALS...');
-        }
       }
-    }, 45);
+    }, 40);
 
     return () => {
       clearInterval(interval);
