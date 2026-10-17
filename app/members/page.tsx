@@ -63,7 +63,7 @@ export default function MembersPage() {
       {/* Background with GTA5 Noir Scene */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <img
-          src="/deargod-bg.png"
+          src="/images/deargod-bg.png"
           alt="DEARGOD Background"
           className="w-full h-full object-cover object-center select-none"
         />
@@ -383,7 +383,7 @@ const getFacebookHandle = (url?: string, name?: string) => {
   }
 };
 
-const DEFAULT_AVATAR = "/deargod-avatar.png";
+const DEFAULT_AVATAR = "/images/deargod-avatar.png";
 
 // Clean Facebook Direct Link Button (No hover popup)
 function FacebookButton({

@@ -19,7 +19,7 @@ interface MusicConfig {
 const DEFAULT_CONFIG: MusicConfig = {
   title: 'ONLY DEARGOD',
   artist: 'DEARGOD',
-  url: '/music.mp3?v=deargod',
+  url: '/audio/music.mp3?v=deargod',
 };
 
 async function getMusicConfig(): Promise<MusicConfig> {
@@ -91,7 +91,9 @@ export async function POST(request: Request) {
 
       // 1. Attempt writing to local filesystem for local dev (ignore EROFS on Vercel)
       try {
-        const targetFilePath = path.join(PUBLIC_DIR, 'music.mp3');
+        const audioDir = path.join(PUBLIC_DIR, 'audio');
+        await fs.mkdir(audioDir, { recursive: true }).catch(() => {});
+        const targetFilePath = path.join(audioDir, 'music.mp3');
         await fs.writeFile(targetFilePath, buffer);
       } catch (fsErr: any) {
         // Expected on Vercel serverless (read-only filesystem)

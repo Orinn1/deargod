@@ -26,7 +26,7 @@ import {
 } from 'lucide-react';
 import { Member, MemberRole } from '@/data/members';
 
-const DEFAULT_AVATAR = '/deargod-avatar.png';
+const DEFAULT_AVATAR = '/images/deargod-avatar.png';
 const PASSCODE = 'deargod'; // Default backoffice passcode
 
 interface MusicState {
@@ -54,7 +54,7 @@ export default function DearGodAdminPage() {
   const [music, setMusic] = useState<MusicState>({
     title: 'ONLY DEARGOD',
     artist: 'DEARGOD',
-    url: '/music.mp3',
+    url: '/audio/music.mp3',
   });
   const [loadingMusic, setLoadingMusic] = useState(true);
   const [musicTitleInput, setMusicTitleInput] = useState('');
@@ -400,7 +400,7 @@ export default function DearGodAdminPage() {
             {/* Logo Emblem */}
             <div className="w-20 h-20 mx-auto rounded-2xl bg-black/80 border border-white/20 p-2.5 flex items-center justify-center shadow-lg mb-6">
               <img
-                src="/deargod-avatar.png"
+                src="/images/deargod-avatar.png"
                 alt="DearGod"
                 className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
               />
@@ -487,7 +487,7 @@ export default function DearGodAdminPage() {
         {/* Brand / Logo */}
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-black border border-white/20 p-1 flex items-center justify-center shadow-sm">
-            <img src="/deargod-avatar.png" alt="DearGod" className="w-full h-full object-contain" />
+            <img src="/images/deargod-avatar.png" alt="DearGod" className="w-full h-full object-contain" />
           </div>
           <div>
             <div className="flex items-center gap-2">

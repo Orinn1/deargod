@@ -19,7 +19,7 @@ export default function LandingPage() {
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         {/* Background Image */}
         <img
-          src="/deargod-bg.png"
+          src="/images/deargod-bg.png"
           alt="DEARGOD Background"
           className="w-full h-full object-cover object-center select-none"
         />
@@ -58,7 +58,7 @@ export default function LandingPage() {
       {/* 2. CENTER: SPIKY DEARGOD METAL LOGO (Static Noise / Glitch Fade-In) */}
       <main className="relative z-20 my-auto py-4 sm:py-6 w-full flex flex-col items-center justify-center px-4">
         <StaticGlitchLogo 
-          src="/deargod-metal-logo.png" 
+          src="/images/deargod-metal-logo.png" 
           alt="DEARGOD Metal Logo" 
         />
       </main>

@@ -1,4 +1,4 @@
-﻿export type MemberRole = 'Founder' | 'Leader' | 'Support' | 'Member';
+export type MemberRole = 'Founder' | 'Leader' | 'Support' | 'Member';
 
 export interface Member {
   id: string;
@@ -15,7 +15,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0001",
     "name": "Seft Winterfell",
     "role": "Founder",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -23,7 +23,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0002",
     "name": "Frequent Knx",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -31,7 +31,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0003",
     "name": "Muzah Winterfell",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -39,7 +39,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0004",
     "name": "Try Knxstyle",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -47,7 +47,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0005",
     "name": "Blink Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -55,7 +55,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0006",
     "name": "ArYang Deargod",
     "role": "Leader",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -63,7 +63,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0007",
     "name": "Boom Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -71,7 +71,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0008",
     "name": "Craig Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -79,7 +79,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0009",
     "name": "Dangz Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -87,7 +87,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0010",
     "name": "Daren Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -95,7 +95,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0011",
     "name": "Edward Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -103,7 +103,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0012",
     "name": "Fiaz Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -111,7 +111,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0013",
     "name": "Highs Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -119,7 +119,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0014",
     "name": "Gusbell Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -127,7 +127,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0015",
     "name": "Haidar Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -135,7 +135,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0016",
     "name": "I'Ice Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -143,7 +143,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0017",
     "name": "Intro Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -151,7 +151,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0018",
     "name": "Jayfiew Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -159,7 +159,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0019",
     "name": "Jusmin Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -167,7 +167,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0020",
     "name": "Kyu Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -175,7 +175,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0021",
     "name": "Magos Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -183,7 +183,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0022",
     "name": "Malfoli Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -191,7 +191,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0023",
     "name": "Mike Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -199,7 +199,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0024",
     "name": "Missouel Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -207,7 +207,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0025",
     "name": "Oraf Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -215,7 +215,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0026",
     "name": "Som Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -223,7 +223,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0027",
     "name": "Sxth Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -231,7 +231,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0028",
     "name": "Synth Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -239,7 +239,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0029",
     "name": "Ton Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -247,7 +247,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0030",
     "name": "Yang Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -255,7 +255,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0031",
     "name": "Youngnxst Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -263,7 +263,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0032",
     "name": "Tiger Deargod",
     "role": "Leader",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -271,7 +271,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0033",
     "name": "Prite Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -279,7 +279,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0034",
     "name": "Dept Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -287,7 +287,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0035",
     "name": "Nept Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -295,7 +295,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0036",
     "name": "Wisdom Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -303,7 +303,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0037",
     "name": "Salmon Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -311,7 +311,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0038",
     "name": "Varonz Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -319,7 +319,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0039",
     "name": "Rxmsxng Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -327,7 +327,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0040",
     "name": "Tylah Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -335,7 +335,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0041",
     "name": "DekWin Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -343,7 +343,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0042",
     "name": "Jayz Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -351,7 +351,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0043",
     "name": "Justx Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -359,7 +359,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0044",
     "name": "Krirk Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -367,7 +367,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0045",
     "name": "Taitania Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -375,7 +375,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0046",
     "name": "Zen Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -383,7 +383,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0047",
     "name": "Missjus Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -391,7 +391,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0048",
     "name": "Inwxerxn Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -399,7 +399,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0049",
     "name": "Yami Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -407,7 +407,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0050",
     "name": "Draft Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -415,7 +415,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0051",
     "name": "Delta Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -423,7 +423,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0052",
     "name": "Nino Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -431,7 +431,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0053",
     "name": "Winwin Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -439,7 +439,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0054",
     "name": "Xel Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -447,7 +447,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0055",
     "name": "Kenryu Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   },
   {
@@ -455,7 +455,7 @@ export const MEMBERS_DATA: Member[] = [
     "memberId": "#0056",
     "name": "Tokyo Deargod",
     "role": "Member",
-    "avatar": "/deargod-avatar.png",
+    "avatar": "/images/deargod-avatar.png",
     "facebook": "https://www.facebook.com/deargod.fury"
   }
 ];

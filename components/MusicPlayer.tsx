@@ -1,7 +1,22 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, Pause, SkipBack, SkipForward, Volume1, Volume2, VolumeX, ChevronDown, ChevronUp, Music } from 'lucide-react';
+import {
+  Play,
+  Pause,
+  SkipBack,
+  SkipForward,
+  Volume1,
+  Volume2,
+  VolumeX,
+  ChevronDown,
+  ChevronUp,
+  Music,
+} from 'lucide-react';
+
+/* ==========================================================================
+   Types & Constants
+   ========================================================================== */
 
 interface MusicInfo {
   title: string;
@@ -9,44 +24,73 @@ interface MusicInfo {
   url: string;
 }
 
-const STORAGE_KEY_TIME = 'app_music_time';
 const STORAGE_KEY_PLAYING = 'app_music_playing';
 const STORAGE_KEY_INFO = 'app_music_info';
 const STORAGE_KEY_VOLUME = 'app_music_volume';
+const STORAGE_KEY_TIME = 'app_music_time';
 
-// Helper to compare audio URLs taking origin and query params into account
+/* ==========================================================================
+   Helper Functions
+   ========================================================================== */
+
+/**
+ * Compare two audio URLs to check if they point to the exact same track
+ */
 function isSameTrack(urlA: string, urlB: string): boolean {
   if (!urlA || !urlB) return false;
   try {
     const origin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
     const objA = new URL(urlA, origin);
     const objB = new URL(urlB, origin);
-    return (objA.pathname + objA.search) === (objB.pathname + objB.search);
+    return objA.pathname + objA.search === objB.pathname + objB.search;
   } catch {
     return urlA === urlB;
   }
 }
 
+/**
+ * Format duration in seconds to mm:ss format
+ */
+function formatTime(secs: number): string {
+  if (isNaN(secs) || secs < 0) return '0:00';
+  const mins = Math.floor(secs / 60);
+  const remainder = Math.floor(secs % 60);
+  return `${mins}:${remainder < 10 ? '0' : ''}${remainder}`;
+}
+
+/* ==========================================================================
+   MusicPlayer Component
+   ========================================================================== */
+
 export default function MusicPlayer() {
+  // Widget open/close state
   const [isOpen, setIsOpen] = useState(false);
+
+  // Playback state
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
+
+  // Volume state
   const [volume, setVolume] = useState<number>(0.8);
   const [prevVolume, setPrevVolume] = useState<number>(0.8);
   const [isMuted, setIsMuted] = useState(false);
+
+  // Current track information
   const [musicInfo, setMusicInfo] = useState<MusicInfo>({
     title: 'ONLY DEARGOD',
     artist: 'DEARGOD',
-    url: '/music.mp3?v=deargod',
+    url: '/audio/music.mp3?v=deargod',
   });
 
+  // Audio and gesture references
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const hasStartedRef = useRef<boolean>(false);
-  const hasRestoredTimeRef = useRef<boolean>(false);
   const wasPlayingBeforeHideRef = useRef<boolean>(false);
 
-  // Restore cached settings from localStorage on client mount (prevents SSR hydration mismatch)
+  /* ------------------------------------------------------------------------
+     Lifecycle 1: Restore cached volume & track info from LocalStorage
+     ------------------------------------------------------------------------ */
   useEffect(() => {
     try {
       const savedVol = localStorage.getItem(STORAGE_KEY_VOLUME);
@@ -57,6 +101,7 @@ export default function MusicPlayer() {
           if (audioRef.current) audioRef.current.volume = val;
         }
       }
+
       const cachedInfo = localStorage.getItem(STORAGE_KEY_INFO);
       if (cachedInfo) {
         const parsed = JSON.parse(cachedInfo);
@@ -67,7 +112,9 @@ export default function MusicPlayer() {
     } catch {}
   }, []);
 
-  // 1. Load music metadata from API and cache in localStorage
+  /* ------------------------------------------------------------------------
+     Lifecycle 2: Fetch dynamic music configuration from API
+     ------------------------------------------------------------------------ */
   useEffect(() => {
     fetch('/api/music')
       .then((res) => res.json())
@@ -92,7 +139,9 @@ export default function MusicPlayer() {
       .catch(() => {});
   }, []);
 
-  // 2. Setup Audio Source & Ensure fresh visit always starts at 0:00
+  /* ------------------------------------------------------------------------
+     Lifecycle 3: Setup Audio source (Fresh visits always start from 0:00)
+     ------------------------------------------------------------------------ */
   useEffect(() => {
     try {
       localStorage.removeItem(STORAGE_KEY_TIME);
@@ -101,28 +150,32 @@ export default function MusicPlayer() {
     const audio = audioRef.current;
     if (!audio || !musicInfo.url) return;
 
-    // Check if the current audio src is actually a different song
+    // Check if the current audio src is already loaded
     if (audio.src && isSameTrack(audio.src, musicInfo.url)) {
       return;
     }
 
     const wasPlaying = isPlaying || hasStartedRef.current;
 
-    // Set new audio file
     audio.src = musicInfo.url;
     audio.currentTime = 0;
     setProgress(0);
     audio.load();
 
     if (wasPlaying) {
-      audio.play().then(() => {
-        hasStartedRef.current = true;
-        setIsPlaying(true);
-      }).catch(() => {});
+      audio
+        .play()
+        .then(() => {
+          hasStartedRef.current = true;
+          setIsPlaying(true);
+        })
+        .catch(() => {});
     }
   }, [musicInfo.url]);
 
-  // 3. Register MediaSession API (Lock screen, background playback, Control Center on iOS & Android)
+  /* ------------------------------------------------------------------------
+     Lifecycle 4: MediaSession API Integration (Lock Screen & Control Center)
+     ------------------------------------------------------------------------ */
   useEffect(() => {
     if (typeof window !== 'undefined' && 'mediaSession' in navigator) {
       try {
@@ -133,7 +186,10 @@ export default function MusicPlayer() {
         });
 
         navigator.mediaSession.setActionHandler('play', () => {
-          audioRef.current?.play().then(() => setIsPlaying(true)).catch(() => {});
+          audioRef.current
+            ?.play()
+            .then(() => setIsPlaying(true))
+            .catch(() => {});
         });
 
         navigator.mediaSession.setActionHandler('pause', () => {
@@ -159,10 +215,11 @@ export default function MusicPlayer() {
     }
   }, [musicInfo]);
 
-  // 4. Force Autoplay & Listen to First Global Interaction (Single-fire only)
+  /* ------------------------------------------------------------------------
+     Lifecycle 5: Autoplay & First User Gesture Listener
+     ------------------------------------------------------------------------ */
   useEffect(() => {
     const tryPlayAudio = () => {
-      // If already started or playing, never re-trigger
       if (hasStartedRef.current) return;
       if (!audioRef.current || !audioRef.current.src) return;
 
@@ -178,7 +235,7 @@ export default function MusicPlayer() {
             removeListeners();
           })
           .catch(() => {
-            // Browser policy blocked unmuted autoplay without user gesture; keep listeners active
+            // Autoplay blocked without user gesture; keep listeners active
           });
       }
     };
@@ -191,10 +248,10 @@ export default function MusicPlayer() {
       });
     };
 
-    // Try immediate autoplay
+    // Attempt immediate playback
     tryPlayAudio();
 
-    // Attach global listeners for first touch/click/scroll
+    // Attach listeners for first interaction
     const events = ['click', 'touchstart', 'touchend', 'pointerdown', 'keydown', 'scroll'];
     events.forEach((event) => {
       window.addEventListener(event, tryPlayAudio, { once: true, passive: true });
@@ -214,8 +271,10 @@ export default function MusicPlayer() {
     };
   }, []);
 
-  // 5. Automatically pause when user leaves the web / minimizes tab / switches apps on mobile
-  // and resume when user returns to the website
+  /* ------------------------------------------------------------------------
+     Lifecycle 6: Mobile App-Switching & Visibility Management
+     Pauses music when minimizing tab / switching apps; resumes on return.
+     ------------------------------------------------------------------------ */
   useEffect(() => {
     const handleVisibilityChange = () => {
       const audio = audioRef.current;
@@ -249,7 +308,7 @@ export default function MusicPlayer() {
       }
     };
 
-    // pagehide fires when navigating away or closing/backgrounding tab (especially on iOS Safari)
+    // Pagehide fires when navigating away or closing/backgrounding tab
     const handlePageHide = () => {
       const audio = audioRef.current;
       if (!audio) return;
@@ -274,7 +333,21 @@ export default function MusicPlayer() {
     };
   }, []);
 
-  // Handle Play/Pause
+  /* ------------------------------------------------------------------------
+     Lifecycle 7: Synchronize Volume with HTMLAudioElement
+     ------------------------------------------------------------------------ */
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+      audioRef.current.muted = volume === 0;
+    }
+  }, [volume]);
+
+  /* ========================================================================
+     Action Handlers
+     ======================================================================== */
+
+  // Toggle Play / Pause
   const togglePlay = () => {
     if (!audioRef.current) return;
 
@@ -300,15 +373,7 @@ export default function MusicPlayer() {
     }
   };
 
-  // Format time (mm:ss)
-  const formatTime = (secs: number) => {
-    if (isNaN(secs) || secs < 0) return '0:00';
-    const mins = Math.floor(secs / 60);
-    const remainder = Math.floor(secs % 60);
-    return `${mins}:${remainder < 10 ? '0' : ''}${remainder}`;
-  };
-
-  // Handle Seek
+  // Seek audio position
   const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!audioRef.current || duration <= 0) return;
     const rect = e.currentTarget.getBoundingClientRect();
@@ -319,15 +384,7 @@ export default function MusicPlayer() {
     setProgress(newTime);
   };
 
-  // Sync volume with HTMLAudioElement
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
-      audioRef.current.muted = volume === 0;
-    }
-  }, [volume]);
-
-  // Handle Volume Change
+  // Change volume
   const handleVolumeChange = (newVol: number) => {
     const clamped = Math.max(0, Math.min(1, newVol));
     setVolume(clamped);
@@ -341,7 +398,7 @@ export default function MusicPlayer() {
     } catch {}
   };
 
-  // Toggle Mute
+  // Toggle Mute / Unmute
   const toggleMute = () => {
     if (!audioRef.current) return;
     if (volume > 0) {
@@ -353,7 +410,7 @@ export default function MusicPlayer() {
     }
   };
 
-  // Restart / Reset
+  // Restart audio track
   const handleRestart = () => {
     if (!audioRef.current) return;
     audioRef.current.currentTime = 0;
@@ -372,9 +429,13 @@ export default function MusicPlayer() {
     }
   };
 
+  /* ========================================================================
+     JSX Rendering
+     ======================================================================== */
+
   return (
     <>
-      {/* Real HTML5 Audio Element with background and loop capabilities */}
+      {/* 1. Real HTML5 Audio Element with Loop & PlaysInline */}
       <audio
         ref={audioRef}
         preload="auto"
@@ -404,7 +465,7 @@ export default function MusicPlayer() {
         }}
       />
 
-      {/* Collapsed Pill Button */}
+      {/* 2. Collapsed Pill Widget */}
       {!isOpen && (
         <div
           onClick={() => setIsOpen(true)}
@@ -412,7 +473,11 @@ export default function MusicPlayer() {
           title="คลิกเพื่อเปิดเครื่องเล่นเพลงแบบเต็ม"
         >
           <div className="flex items-center gap-2">
-            <span className={`w-2 h-2 rounded-full ${isPlaying ? 'bg-emerald-400 animate-pulse' : 'bg-zinc-500'}`} />
+            <span
+              className={`w-2 h-2 rounded-full ${
+                isPlaying ? 'bg-emerald-400 animate-pulse' : 'bg-zinc-500'
+              }`}
+            />
             <Music className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white transition-colors" />
           </div>
 
@@ -438,16 +503,21 @@ export default function MusicPlayer() {
             {isPlaying ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3 ml-0.5" />}
           </button>
 
-          {/* Quick Volume Slider in Collapsed Pill Bar */}
+          {/* Quick Volume Slider in Collapsed Pill */}
           <div
             className="flex items-center group/vol ml-0.5"
             onClick={(e) => e.stopPropagation()}
           >
             <button
+              suppressHydrationWarning
               type="button"
               onClick={toggleMute}
               className="w-6 h-6 rounded-full bg-white/[0.04] hover:bg-white/[0.15] text-zinc-400 hover:text-white flex items-center justify-center transition-colors active:scale-90"
-              title={volume === 0 ? 'เปิดเสียง' : `ระดับเสียง: ${Math.round(volume * 100)}% (คลิกเพื่อปิด/เปิดเสียง)`}
+              title={
+                volume === 0
+                  ? 'เปิดเสียง'
+                  : `ระดับเสียง: ${Math.round(volume * 100)}% (คลิกเพื่อปิด/เปิดเสียง)`
+              }
             >
               {volume === 0 ? (
                 <VolumeX className="w-3 h-3 text-red-400" />
@@ -475,7 +545,7 @@ export default function MusicPlayer() {
         </div>
       )}
 
-      {/* Expanded Player Widget */}
+      {/* 3. Expanded Player Widget */}
       {isOpen && (
         <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 p-3 sm:p-3.5 bg-[#0C0D12]/95 backdrop-blur-md border border-white/[0.1] rounded-2xl shadow-2xl w-[calc(100vw-32px)] sm:w-72 max-w-xs select-none transition-all duration-200">
           <div className="w-full">
@@ -486,7 +556,11 @@ export default function MusicPlayer() {
               title="คลิกเพื่อย่อเครื่องเล่นเพลง"
             >
               <span className="text-[9px] font-mono tracking-widest text-zinc-500 group-hover:text-zinc-300 uppercase flex items-center gap-1.5 transition-colors">
-                <span className={`w-1.5 h-1.5 rounded-full ${isPlaying ? 'bg-emerald-400 animate-pulse' : 'bg-zinc-600'}`} />
+                <span
+                  className={`w-1.5 h-1.5 rounded-full ${
+                    isPlaying ? 'bg-emerald-400 animate-pulse' : 'bg-zinc-600'
+                  }`}
+                />
                 NOW PLAYING
               </span>
               <button
@@ -502,6 +576,7 @@ export default function MusicPlayer() {
               </button>
             </div>
 
+            {/* Track Title and Artist */}
             <div className="flex items-center justify-between">
               <div>
                 <h4 className="text-xs font-mono font-bold text-white tracking-wider truncate max-w-[190px]">
@@ -513,7 +588,7 @@ export default function MusicPlayer() {
               </div>
             </div>
 
-            {/* Progress Bar */}
+            {/* Seek / Progress Bar */}
             <div className="mt-2 flex items-center gap-2">
               <span className="text-[9px] font-mono text-zinc-500 w-7">
                 {formatTime(progress)}
@@ -532,7 +607,7 @@ export default function MusicPlayer() {
               </span>
             </div>
 
-            {/* Action Controls */}
+            {/* Playback Controls & Volume Badge */}
             <div className="mt-2 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <button
@@ -547,7 +622,11 @@ export default function MusicPlayer() {
                   className="w-7 h-7 rounded-full bg-white text-black flex items-center justify-center hover:bg-zinc-200 transition-all active:scale-90 shadow-sm"
                   title={isPlaying ? 'Pause' : 'Play'}
                 >
-                  {isPlaying ? <Pause className="w-3.5 h-3.5 fill-current" /> : <Play className="w-3.5 h-3.5 fill-current ml-0.5" />}
+                  {isPlaying ? (
+                    <Pause className="w-3.5 h-3.5 fill-current" />
+                  ) : (
+                    <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
+                  )}
                 </button>
                 <button
                   onClick={handleRestart}
@@ -558,15 +637,15 @@ export default function MusicPlayer() {
                 </button>
               </div>
 
-              {/* Volume Percentage Badge */}
-              <span className="text-[10px] font-mono font-medium text-zinc-400">
+              <span suppressHydrationWarning className="text-[10px] font-mono font-medium text-zinc-400">
                 {Math.round(volume * 100)}%
               </span>
             </div>
 
-            {/* Dedicated Volume Slider Row in Expanded Widget */}
+            {/* Dedicated Volume Slider in Expanded Widget */}
             <div className="mt-2.5 pt-2 border-t border-white/[0.08] flex items-center gap-2">
               <button
+                suppressHydrationWarning
                 type="button"
                 onClick={toggleMute}
                 className="text-zinc-400 hover:text-white transition-colors p-1 -ml-1 rounded active:scale-90"

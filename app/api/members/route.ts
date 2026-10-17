@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 const DATA_FILE_PATH = path.join(process.cwd(), 'data', 'members.json');
-const DEFAULT_AVATAR = '/deargod-avatar.png';
+const DEFAULT_AVATAR = '/images/deargod-avatar.png';
 
 // Sanitize member object so no properties are undefined (Firestore forbids undefined values)
 function cleanMemberDoc(m: any): Member {

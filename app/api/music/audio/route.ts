@@ -59,7 +59,9 @@ export async function GET(request: Request) {
               };
 
               // Keep local file in sync with cloud chunks (safely ignored on serverless)
-              const localPath = path.join(process.cwd(), 'public', 'music.mp3');
+              const localAudioDir = path.join(process.cwd(), 'public', 'audio');
+              await fs.mkdir(localAudioDir, { recursive: true }).catch(() => {});
+              const localPath = path.join(localAudioDir, 'music.mp3');
               fs.writeFile(localPath, audioBuffer).catch(() => {});
             }
           }
@@ -69,13 +71,19 @@ export async function GET(request: Request) {
       }
     }
 
-    // 3. Fallback: Local public/music.mp3
+    // 3. Fallback: Local public/audio/music.mp3 (or legacy public/music.mp3)
     if (!audioBuffer) {
       try {
-        const localPath = path.join(process.cwd(), 'public', 'music.mp3');
+        const localPath = path.join(process.cwd(), 'public', 'audio', 'music.mp3');
         audioBuffer = await fs.readFile(localPath);
         mimeType = 'audio/mpeg';
-      } catch {}
+      } catch {
+        try {
+          const fallbackPath = path.join(process.cwd(), 'public', 'music.mp3');
+          audioBuffer = await fs.readFile(fallbackPath);
+          mimeType = 'audio/mpeg';
+        } catch {}
+      }
     }
 
     if (!audioBuffer || audioBuffer.length === 0) {

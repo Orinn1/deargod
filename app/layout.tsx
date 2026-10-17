@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     siteName: "DEARGOD WINTERFELL",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/images/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "DEARGOD WINTERFELL",
@@ -44,12 +44,12 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "DEARGOD WINTERFELL",
     description: "Official House of DEARGOD WINTERFELL",
-    images: ["/og-image.jpg"],
+    images: ["/images/og-image.jpg"],
   },
   icons: {
-    icon: "/deargod-avatar.png",
-    shortcut: "/deargod-avatar.png",
-    apple: "/deargod-avatar.png",
+    icon: "/images/deargod-avatar.png",
+    shortcut: "/images/deargod-avatar.png",
+    apple: "/images/deargod-avatar.png",
   },
 };
 

@@ -46,7 +46,7 @@ async function run() {
       name: m.name,
       role: m.role,
       facebook: m.facebook || "",
-      avatar: m.avatar || "/deargod-avatar.png",
+      avatar: m.avatar || "/images/deargod-avatar.png",
     };
     await setDoc(doc(db, "members", m.id), cleanDoc);
     count++;
