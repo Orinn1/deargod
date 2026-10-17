@@ -87,7 +87,7 @@ export default function MembersPage() {
       </header>
 
       {/* MAIN CONTAINER */}
-      <main className="relative z-20 flex-1 max-w-[1440px] w-full mx-auto px-4 sm:px-8 md:px-12 py-6 sm:py-10">
+      <main className="relative z-20 flex-1 max-w-[1550px] w-full mx-auto px-4 sm:px-8 md:px-12 py-6 sm:py-10">
         {/* 1. TOP CENTER: DEARGOD & MEMBERS */}
         <div className="flex flex-col items-center text-center mt-2 sm:mt-4 mb-6 sm:mb-12">
           <h1 
@@ -214,12 +214,14 @@ export default function MembersPage() {
               <section>
                 <SectionHeader title={founderList.length > 1 ? "FOUNDERS" : "FOUNDER"} count={founderList.length} />
                 <div
-                  className={`grid gap-6 mx-auto px-2 ${
+                  className={`grid gap-4 sm:gap-6 mx-auto px-2 ${
                     founderList.length === 1
                       ? 'max-w-xl'
                       : founderList.length === 2
                       ? 'grid-cols-1 md:grid-cols-2 max-w-4xl'
-                      : 'grid-cols-1 md:grid-cols-2 xl:grid-cols-4 max-w-[1500px]'
+                      : founderList.length === 3
+                      ? 'grid-cols-1 md:grid-cols-3 max-w-5xl'
+                      : 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 max-w-[1550px]'
                   }`}
                 >
                   {founderList.map((m) => (
@@ -232,8 +234,18 @@ export default function MembersPage() {
             {/* 2. LEADER SECTION (Dual Executive Showcase) */}
             {(selectedRole === 'All' || selectedRole === 'Leader') && leaderList.length > 0 && (
               <section>
-                <SectionHeader title="LEADERS" count={leaderList.length} />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto px-2">
+                <SectionHeader title={leaderList.length > 1 ? "LEADERS" : "LEADER"} count={leaderList.length} />
+                <div
+                  className={`grid gap-4 sm:gap-6 mx-auto px-2 ${
+                    leaderList.length === 1
+                      ? 'max-w-xl'
+                      : leaderList.length === 2
+                      ? 'grid-cols-1 md:grid-cols-2 max-w-4xl'
+                      : leaderList.length === 3
+                      ? 'grid-cols-1 md:grid-cols-3 max-w-5xl'
+                      : 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 max-w-[1550px]'
+                  }`}
+                >
                   {leaderList.map((m) => (
                     <LeaderShowcaseCard key={m.id} member={m} />
                   ))}
@@ -245,7 +257,17 @@ export default function MembersPage() {
             {(selectedRole === 'All' || selectedRole === 'Support') && supportList.length > 0 && (
               <section>
                 <SectionHeader title="SUPPORT" count={supportList.length} />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto px-2">
+                <div
+                  className={`grid gap-4 sm:gap-6 mx-auto px-2 ${
+                    supportList.length === 1
+                      ? 'max-w-xl'
+                      : supportList.length === 2
+                      ? 'grid-cols-1 md:grid-cols-2 max-w-4xl'
+                      : supportList.length === 3
+                      ? 'grid-cols-1 md:grid-cols-3 max-w-5xl'
+                      : 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 max-w-[1550px]'
+                  }`}
+                >
                   {supportList.map((m) => (
                     <LeaderShowcaseCard key={m.id} member={m} />
                   ))}
@@ -433,16 +455,16 @@ function FounderShowcaseCard({ member }: { member: Member }) {
       <div className="absolute -inset-0.5 rounded-3xl bg-gradient-to-b from-white/15 to-transparent blur-md opacity-30 group-hover/founder:opacity-60 transition-opacity duration-300 pointer-events-none" />
 
       {/* Main VIP Founder Card */}
-      <div className="relative rounded-3xl border border-white/30 hover:border-white/70 bg-gradient-to-b from-[#13151D] via-[#0C0D13] to-[#07080B] p-5 sm:p-6 lg:p-7 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(255,255,255,0.06)] transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+      <div className="relative rounded-3xl border border-white/30 hover:border-white/70 bg-gradient-to-b from-[#13151D] via-[#0C0D13] to-[#07080B] p-4 sm:p-5 lg:p-5 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(255,255,255,0.06)] transition-all duration-300 hover:-translate-y-1 overflow-hidden">
         {/* Top Tactical Status Bar */}
-        <div className="flex items-center justify-between gap-3 mb-5 relative z-10 border-b border-white/[0.08] pb-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/20 text-[11px] font-mono tracking-widest text-white uppercase shadow-sm">
+        <div className="flex items-center justify-between gap-2 sm:gap-3 mb-4 relative z-10 border-b border-white/[0.08] pb-2.5">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/[0.06] border border-white/20 text-[10px] sm:text-[11px] font-mono tracking-widest text-white uppercase shadow-sm">
             <span className="font-bold">FOUNDER</span>
             <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse ml-0.5" />
           </div>
 
-          <div className="flex items-center gap-2.5">
-            <span className="text-xs font-mono font-bold tracking-widest text-zinc-400 bg-black/40 px-2.5 py-0.5 rounded-md border border-white/10">
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] sm:text-xs font-mono font-bold tracking-widest text-zinc-400 bg-black/40 px-2 sm:px-2.5 py-0.5 rounded-md border border-white/10">
               {member.memberId}
             </span>
             {member.facebook && (
@@ -452,11 +474,11 @@ function FounderShowcaseCard({ member }: { member: Member }) {
         </div>
 
         {/* Card Center: Avatar & Info in sleek architectural composition */}
-        <div className="flex items-center gap-4 sm:gap-6 relative z-10">
+        <div className="flex items-center gap-3.5 sm:gap-4 relative z-10">
           {/* Glowing Avatar Frame */}
           <div className="relative flex-shrink-0">
             {/* Halo ring */}
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl p-[2px] bg-gradient-to-b from-white via-zinc-400 to-zinc-800 shadow-[0_0_20px_rgba(255,255,255,0.2)] group-hover/founder:shadow-[0_0_30px_rgba(255,255,255,0.35)] transition-all duration-300">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 lg:w-[68px] lg:h-[68px] rounded-2xl p-[2px] bg-gradient-to-b from-white via-zinc-400 to-zinc-800 shadow-[0_0_20px_rgba(255,255,255,0.2)] group-hover/founder:shadow-[0_0_30px_rgba(255,255,255,0.35)] transition-all duration-300">
               <div className="w-full h-full rounded-2xl bg-black/80 flex items-center justify-center overflow-hidden border border-black/40 p-1.5">
                 <img
                   src={avatarSrc}
@@ -470,7 +492,10 @@ function FounderShowcaseCard({ member }: { member: Member }) {
 
           {/* Member Typography */}
           <div className="flex-1 text-left min-w-0">
-            <h3 className="text-lg sm:text-xl lg:text-2xl font-black text-white uppercase tracking-wider leading-tight break-words drop-shadow-[0_2px_10px_rgba(255,255,255,0.3)]">
+            <h3 
+              className="text-base sm:text-lg xl:text-[17px] 2xl:text-xl font-black text-white uppercase tracking-normal sm:tracking-wide leading-tight truncate group-hover/founder:text-zinc-100 transition-colors drop-shadow-[0_2px_10px_rgba(255,255,255,0.3)]"
+              title={member.name}
+            >
               {member.name}
             </h3>
             <p className="text-xs font-mono text-zinc-400 mt-1 truncate">
@@ -493,9 +518,9 @@ function LeaderShowcaseCard({ member }: { member: Member }) {
       <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-b from-white/10 to-transparent blur-md opacity-30 group-hover/leader:opacity-60 transition-opacity duration-300 pointer-events-none" />
 
       {/* Main Leader Card */}
-      <div className="relative rounded-2xl border border-white/20 hover:border-white/50 bg-gradient-to-b from-[#12131A] via-[#0C0D12] to-[#07080B] p-5 sm:p-6 backdrop-blur-xl shadow-[0_15px_35px_rgba(0,0,0,0.7),0_0_20px_rgba(255,255,255,0.04)] transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+      <div className="relative rounded-2xl border border-white/20 hover:border-white/50 bg-gradient-to-b from-[#12131A] via-[#0C0D12] to-[#07080B] p-4 sm:p-5 backdrop-blur-xl shadow-[0_15px_35px_rgba(0,0,0,0.7),0_0_20px_rgba(255,255,255,0.04)] transition-all duration-300 hover:-translate-y-1 overflow-hidden">
         {/* Top Tactical Status Bar */}
-        <div className="flex items-center justify-between gap-3 mb-4 relative z-10 border-b border-white/[0.06] pb-2.5">
+        <div className="flex items-center justify-between gap-2 sm:gap-3 mb-3.5 relative z-10 border-b border-white/[0.06] pb-2.5">
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/15 text-[10px] font-mono tracking-widest text-zinc-200 uppercase">
             <span className="font-bold">{member.role}</span>
           </div>
@@ -511,9 +536,9 @@ function LeaderShowcaseCard({ member }: { member: Member }) {
         </div>
 
         {/* Center: Avatar & Details */}
-        <div className="flex items-center gap-4 sm:gap-5 relative z-10">
+        <div className="flex items-center gap-3.5 sm:gap-4 relative z-10">
           {/* Avatar with Metallic Ring */}
-          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl p-[2px] bg-gradient-to-b from-white/80 via-zinc-400 to-zinc-800 shadow-[0_0_20px_rgba(255,255,255,0.15)] flex-shrink-0 group-hover/leader:scale-105 transition-all duration-300">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 lg:w-[68px] lg:h-[68px] rounded-2xl p-[2px] bg-gradient-to-b from-white/80 via-zinc-400 to-zinc-800 shadow-[0_0_20px_rgba(255,255,255,0.15)] flex-shrink-0 group-hover/leader:scale-105 transition-all duration-300">
             <div className="w-full h-full rounded-2xl bg-black/80 flex items-center justify-center overflow-hidden border border-black/40 p-1.5">
               <img
                 src={avatarSrc}
@@ -526,10 +551,13 @@ function LeaderShowcaseCard({ member }: { member: Member }) {
 
           {/* Leader Name */}
           <div className="flex-1 min-w-0">
-            <h3 className="text-base sm:text-lg md:text-xl font-extrabold text-white uppercase tracking-wider leading-snug truncate group-hover:text-zinc-100 transition-colors">
+            <h3 
+              className="text-base sm:text-lg xl:text-[17px] 2xl:text-xl font-extrabold text-white uppercase tracking-normal sm:tracking-wide leading-tight truncate group-hover/leader:text-zinc-100 transition-colors"
+              title={member.name}
+            >
               {member.name}
             </h3>
-            <p className="text-[11px] font-mono text-zinc-500 mt-0.5 truncate">
+            <p className="text-[11px] font-mono text-zinc-500 mt-1 truncate">
               {getFacebookHandle(member.facebook, member.name)}
             </p>
           </div>
